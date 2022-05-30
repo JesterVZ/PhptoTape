@@ -6,3 +6,8 @@ abstract class Event extends Equatable{
   @override
   List<Object> get props => [];
 }
+
+class GetPhotosEvent extends Event{
+  int page;
+  GetPhotosEvent(this.page);
+}
