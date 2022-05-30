@@ -1,6 +1,7 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:photo_tape/model/photo_model.dart';
 
 class HttpClient{
   final Dio _apiClient = _getDio(baseUrl: null);
@@ -33,8 +34,12 @@ class HttpClient{
       var cookieJar=CookieJar();
       _apiClient.interceptors.add(CookieManager(cookieJar));
       final response = await _apiClient.post(uri, data: formData);
+      List<PhotoModel> photos = [];
       if(response.statusCode == 200){
-        return response.data;
+        for(int i = 0; i < response.data['photos']['photo'].length; i++){
+          photos.add(PhotoModel.fromMap(response.data['photos']['photo'][i]));
+        }
+        return photos;
       }
     }catch(e){
       return e;

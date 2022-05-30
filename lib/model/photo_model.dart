@@ -8,6 +8,7 @@ class PhotoModel{
   int? ispublic;
   int? isfriend;
   int? isfamily;
+  String? url;
 
   PhotoModel({
     required this.id,
@@ -18,7 +19,8 @@ class PhotoModel{
     required this.title,
     required this.isfamily,
     required this.isfriend,
-    required this.ispublic
+    required this.ispublic,
+    this.url
   });
 
   factory PhotoModel.fromMap(Map<dynamic, dynamic> map){
@@ -31,7 +33,8 @@ class PhotoModel{
       title: map['title'],
       ispublic: map['ispublic'],
       isfriend: map['isfriend'],
-      isfamily: map['isfamily']
+      isfamily: map['isfamily'],
+      url: "https://farm${map['farm']}.staticflickr.com/${map['server']}/${map['id']}_${map['secret']}.jpg"
     );
   }
 }

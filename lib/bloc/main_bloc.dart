@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:photo_tape/bloc/main_event.dart';
 import 'package:photo_tape/bloc/main_state.dart';
+import 'package:photo_tape/model/photo_model.dart';
 
 import '../repository/main_repo.dart';
 
@@ -23,7 +24,9 @@ class MainBloc extends Bloc<Event, MainState>{
     yield state.copyWith(loading: true, error: null);
     try{
       Object? result = await repo.getPhoto(event.page);
-      
+      if(result is List<PhotoModel>){
+        yield state.copyWith(error: null, loading: false, photos: result);
+      }
     }catch(e){
       yield state.copyWith(error: e.toString(), loading: false);
     }
