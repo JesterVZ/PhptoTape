@@ -46,6 +46,9 @@ class _MainPage extends State<MainPage>{
     if(state.loading == true){
       return;
     }
+    if(state.photos != null){
+      
+    }
   }
   @override
   void didChangeDependencies() {
