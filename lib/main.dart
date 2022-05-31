@@ -2,15 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:photo_tape/DI/dependency-provider.dart';
-import 'package:photo_tape/pages/main_page.dart';
+import 'package:photo_tape/pages/photo_page.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(
-    DependencyProvider(
-      child: const MyApp(),
-    )
-  );
+  runApp(DependencyProvider(
+    child: const MyApp(),
+  ));
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -21,7 +19,6 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -34,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  MainPage(),
+      home: PhotoPage(),
     );
   }
 }

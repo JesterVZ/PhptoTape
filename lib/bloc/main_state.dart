@@ -1,27 +1,27 @@
 import 'package:photo_tape/model/photo_model.dart';
 
-class MainState{
+class MainState {
   final bool? loading;
+  final bool? isSearch;
   final Object? error;
   final List<PhotoModel>? photos;
 
-  MainState({this.loading, this.error, this.photos});
-
+  MainState({this.loading, this.error, this.photos, this.isSearch});
 
   static initial() => MainState(
-    loading: false,
-    error: null,
-  );
+        loading: false,
+        error: null,
+      );
 
-  MainState copyWith({
-    bool? loading,
-    Object? error,
-    List<PhotoModel>? photos
-  }){
+  MainState copyWith(
+      {bool? loading,
+      Object? error,
+      List<PhotoModel>? photos,
+      bool? isSearch}) {
     return MainState(
-      error: error,
-      loading: loading ?? this.loading,
-      photos: photos ?? this.photos
-    );
+        error: error,
+        loading: loading ?? this.loading,
+        photos: photos ?? this.photos,
+        isSearch: isSearch);
   }
 }
