@@ -45,7 +45,6 @@ class HttpClient {
   }
 
   Future<Object?> getPhotos(int page, String tag) async {
-    //OAuthToken? token = await oAuth();
     String uri = mainUrl;
     try {
       var formData = FormData.fromMap({
@@ -56,18 +55,21 @@ class HttpClient {
         'tags': tag,
         'page': page
       });
-      //var cookieJar = CookieJar();
-      //_apiClient.interceptors.add(CookieManager(cookieJar));
       final response = await _apiClient.post(uri, data: formData);
       List<PhotoModel> photos = [];
+      Map<String, dynamic> photosMap = {};
       if (response.statusCode == 200) {
         if (response.data['photos']['photo'].length == 0) {
           return "Ничего не найдено";
         }
         for (int i = 0; i < response.data['photos']['photo'].length; i++) {
           photos.add(PhotoModel.fromMap(response.data['photos']['photo'][i]));
+          Map<String, dynamic> map = {
+            response.data['photos']['photo'][i]['id'] : PhotoModel.fromMap(response.data['photos']['photo'][i])
+          };
+          photosMap.addEntries(map.entries);
         }
-        return photos;
+        return photosMap;
       }
     } catch (e) {
       return e;

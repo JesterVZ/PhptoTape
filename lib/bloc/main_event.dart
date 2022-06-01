@@ -12,3 +12,9 @@ class GetPhotosEvent extends Event {
   String tag;
   GetPhotosEvent(this.page, this.tag);
 }
+
+class GetPhotoFullInfo extends Event{
+  String photoId;
+  String secret;
+  GetPhotoFullInfo(this.photoId, this.secret);
+}

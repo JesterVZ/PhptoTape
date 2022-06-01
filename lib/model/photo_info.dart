@@ -2,13 +2,15 @@ class PhotoInfo {
   Title? title;
   Owner? owner;
   String? views;
+  Description? description;
 
-  PhotoInfo({required this.title, required this.owner, required this.views});
+  PhotoInfo({required this.title, required this.owner, required this.views, required this.description});
 
   factory PhotoInfo.fromMap(Map<dynamic, dynamic> map) {
     return PhotoInfo(
-        title: map['title'] != null ? Title.fromMap(map) : null,
-        owner: map['owner'] != null ? Owner.fromMap(map) : null,
+        title: map['title'] != null ? Title.fromMap(map['title']) : null,
+        owner: map['owner'] != null ? Owner.fromMap(map['owner']) : null,
+        description: map['description'] != null ? Description.fromMap(map['description']) : null,
         views: map['views']);
   }
 }
@@ -33,5 +35,13 @@ class Title {
   Title({required this.content});
   factory Title.fromMap(Map<dynamic, dynamic> map) {
     return Title(content: map['_content']);
+  }
+}
+
+class Description{
+  String? content;
+  Description({required this.content});
+  factory Description.fromMap(Map<dynamic, dynamic> map){
+    return Description(content: map['_content']);
   }
 }

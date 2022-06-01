@@ -9,6 +9,7 @@ class PhotoModel{
   int? isfriend;
   int? isfamily;
   String? url;
+  bool? isFavorite;
 
   PhotoModel({
     required this.id,
@@ -20,7 +21,8 @@ class PhotoModel{
     required this.isfamily,
     required this.isfriend,
     required this.ispublic,
-    this.url
+    this.url,
+    this.isFavorite
   });
 
   factory PhotoModel.fromMap(Map<dynamic, dynamic> map){

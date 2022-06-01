@@ -21,6 +21,7 @@ class _PhotoPage extends State<PhotoPage> {
   TextEditingController searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
   List<PhotoModel> photos = [];
+  Map<String, dynamic> photosMap = {};
   bool isLoading = false;
 
   @override
@@ -67,11 +68,11 @@ class _PhotoPage extends State<PhotoPage> {
                 children: [
                   Scrollbar(
                       child: ListView.builder(
-                          itemCount: photos.length,
+                          itemCount: photosMap.length,
                           controller: scrollController,
                           itemBuilder: (BuildContext context, int i) {
                             return PhotoCard(
-                                photo: photos[i], openPhoto: _openPhoto);
+                                photo: photosMap.values.elementAt(i), openPhoto: _openPhoto);
                           })),
                   Visibility(
                       visible: isLoading,
@@ -120,12 +121,13 @@ class _PhotoPage extends State<PhotoPage> {
                       child: const Text('OK'),
                     ),
                   ]));
-      photos = [];
+      //photos = [];
       return;
     }
     if (state.photos != null) {
       if (state.isSearch == true && page == 1) {
-        photos = state.photos!;
+        //photos = state.photos!;
+        photosMap = state.photos!;
         scrollController.animateTo(scrollController.position.minScrollExtent,
             duration: const Duration(milliseconds: 400),
             curve: Curves.fastOutSlowIn);
