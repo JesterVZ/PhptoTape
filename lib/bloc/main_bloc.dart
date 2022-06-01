@@ -26,6 +26,9 @@ class MainBloc extends Bloc<Event, MainState> {
     if (event is GetRequestToken) {
       yield* _handleGetRequestToken(event);
     }
+    if (event is GetFavorites) {
+      yield* _handleGetFavorites(event);
+    }
   }
 
   MainBloc(this.repo) : super(MainState.initial());
@@ -48,6 +51,10 @@ class MainBloc extends Bloc<Event, MainState> {
 
   getRequestToken(String code) {
     add(GetRequestToken(code));
+  }
+
+  getFavorites() {
+    add(GetFavorites());
   }
 
   Stream<MainState> _handleSearchPhotos(GetPhotosEvent event) async* {
@@ -108,6 +115,16 @@ class MainBloc extends Bloc<Event, MainState> {
       } else {
         yield state.copyWith(error: result, loading: false);
       }
+    } catch (e) {
+      yield state.copyWith(error: e.toString(), loading: false);
+    }
+  }
+
+  Stream<MainState> _handleGetFavorites(GetFavorites event) async* {
+    Object? result = await repo.getFavoriteList();
+    yield state.copyWith(loading: true, error: null, accessTokenUrl: null);
+    try {
+      Object? result = await repo.getFavoriteList();
     } catch (e) {
       yield state.copyWith(error: e.toString(), loading: false);
     }

@@ -32,3 +32,7 @@ class GetRequestToken extends Event {
   String code;
   GetRequestToken(this.code);
 }
+
+class GetFavorites extends Event {
+  const GetFavorites();
+}

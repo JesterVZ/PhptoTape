@@ -38,6 +38,20 @@ class HttpClient {
     return result;
   }
 
+  Future<Object?> checkToken(String token) async {}
+
+  Future<Object?> getFavoriteList() async {
+    String uri = mainUrl;
+    Map<String, dynamic> formdata = {
+      'api_key': api_key,
+      'format': 'json',
+      'nojsoncallback': '1',
+      'method': 'flickr.favorites.getList'
+    };
+    var result = await client!.post(Uri.parse(uri), body: formdata);
+    return result;
+  }
+
   Future<Object?> getRequestToken(String code) async {
     var result = await flickrApiClient!.requestToken(code);
     if (result is Client) {

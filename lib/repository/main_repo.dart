@@ -27,6 +27,11 @@ class MainRepo {
     return result;
   }
 
+  Future<Object?> getFavoriteList() async {
+    var result = await httpClient.getFavoriteList();
+    return result;
+  }
+
   Map<String, dynamic> addToFavorite(Map<String, dynamic>? map, String id) {
     //mock
     PhotoModel newPhotoModel = map![id];
