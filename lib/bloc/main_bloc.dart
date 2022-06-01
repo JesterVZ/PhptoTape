@@ -17,6 +17,9 @@ class MainBloc extends Bloc<Event, MainState> {
     if(event is GetPhotoFullInfo){
       yield* _handleGetFullInfo(event);
     }
+    if(event is SetFavorite){
+      yield* _handleSetFavorite(event);
+    }
   }
 
   MainBloc(this.repo) : super(MainState.initial());
@@ -29,15 +32,19 @@ class MainBloc extends Bloc<Event, MainState> {
     add(GetPhotoFullInfo(photoId, secret));
   }
 
+  setFavorite(String id){
+    add(SetFavorite(id));
+  }
+
   Stream<MainState> _handleSearchPhotos(GetPhotosEvent event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
       Object? result = await repo.getPhoto(event.page, event.tag);
       if (result is Map<String, dynamic>) {
         yield state.copyWith(
-            error: null, loading: false, photos: result, isSearch: true);
+            error: null, loading: false, photos: result, action: "search");
       } else {
-        yield state.copyWith(error: result, loading: false, isSearch: true);
+        yield state.copyWith(error: result, loading: false, action: "search");
       }
     } catch (e) {
       yield state.copyWith(error: e.toString(), loading: false);
@@ -52,6 +59,17 @@ class MainBloc extends Bloc<Event, MainState> {
         yield state.copyWith(
             error: null, loading: false, photoInfo: result);
       }
+    }catch(e){
+      yield state.copyWith(error: e.toString(), loading: false);
+    }
+  }
+
+  Stream<MainState> _handleSetFavorite(SetFavorite event) async*{
+    yield state.copyWith(loading: true, error: null);
+    try{
+      Map<String, dynamic>? result = repo.addToFavorite(state.photos, event.id);
+        yield state.copyWith(
+              error: null, loading: false, photos: result, action: "setFavorite");
     }catch(e){
       yield state.copyWith(error: e.toString(), loading: false);
     }

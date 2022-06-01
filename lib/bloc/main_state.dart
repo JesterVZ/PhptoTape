@@ -3,12 +3,12 @@ import 'package:photo_tape/model/photo_model.dart';
 
 class MainState {
   final bool? loading;
-  final bool? isSearch;
+  final String? action;
   final Object? error;
   final Map<String, dynamic>? photos;
   final PhotoInfo? photoInfo;
 
-  MainState({this.loading, this.error, this.photos, this.isSearch, this.photoInfo});
+  MainState({this.loading, this.error, this.photos, this.action, this.photoInfo});
 
   static initial() => MainState(
         loading: false,
@@ -19,13 +19,13 @@ class MainState {
       {bool? loading,
       Object? error,
       Map<String, dynamic>? photos,
-      bool? isSearch,
+      String? action,
       PhotoInfo? photoInfo}) {
     return MainState(
         error: error,
         loading: loading ?? this.loading,
         photos: photos ?? this.photos,
         photoInfo: photoInfo,
-        isSearch: isSearch);
+        action: action);
   }
 }

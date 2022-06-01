@@ -7,7 +7,8 @@ import '../../model/photo_model.dart';
 class PhotoCard extends StatefulWidget {
   PhotoModel photo;
   ValueChanged<PhotoModel> openPhoto;
-  PhotoCard({required this.photo, required this.openPhoto});
+  ValueChanged<String> like;
+  PhotoCard({required this.photo, required this.openPhoto, required this.like});
   @override
   State<StatefulWidget> createState() => _PhotoCard();
 }
@@ -42,12 +43,17 @@ class _PhotoCard extends State<PhotoCard> {
                 Positioned(
                     bottom: 5,
                     left: 5,
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      child: SvgPicture.asset(
-                        'assets/like.svg',
-                        color: Colors.grey,
+                    child: GestureDetector(
+                      onTap: (){
+                        widget.like.call(widget.photo.id!);
+                      },
+                      child: Container(
+                        width: 50,
+                        height: 50,
+                        child: SvgPicture.asset(
+                          'assets/like.svg',
+                          color: widget.photo.isFavorite == true ? Colors.red : Colors.grey,
+                        ),
                       ),
                     ))
               ],

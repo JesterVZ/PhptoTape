@@ -17,10 +17,10 @@ class MainRepo {
     return result;
   }
 
-  Map<String, PhotoModel> addToFavorite(PhotoModel photoModel){
-    Map<String, PhotoModel> map = {
-      '${photoModel.id}':photoModel
-    };
+  Map<String, dynamic> addToFavorite(Map<String, dynamic>? map, String id){ //mock
+    PhotoModel newPhotoModel = map![id];
+    newPhotoModel.isFavorite = true;
+    map.update(id, (value) => newPhotoModel);
     return map;
   }
 }

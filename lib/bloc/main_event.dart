@@ -18,3 +18,9 @@ class GetPhotoFullInfo extends Event{
   String secret;
   GetPhotoFullInfo(this.photoId, this.secret);
 }
+
+
+class SetFavorite extends Event{
+  String id;
+  SetFavorite(this.id);
+}

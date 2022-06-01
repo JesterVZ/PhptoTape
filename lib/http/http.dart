@@ -56,14 +56,12 @@ class HttpClient {
         'page': page
       });
       final response = await _apiClient.post(uri, data: formData);
-      List<PhotoModel> photos = [];
       Map<String, dynamic> photosMap = {};
       if (response.statusCode == 200) {
         if (response.data['photos']['photo'].length == 0) {
           return "Ничего не найдено";
         }
         for (int i = 0; i < response.data['photos']['photo'].length; i++) {
-          photos.add(PhotoModel.fromMap(response.data['photos']['photo'][i]));
           Map<String, dynamic> map = {
             response.data['photos']['photo'][i]['id'] : PhotoModel.fromMap(response.data['photos']['photo'][i])
           };
