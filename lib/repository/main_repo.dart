@@ -19,7 +19,11 @@ class MainRepo {
 
   Map<String, dynamic> addToFavorite(Map<String, dynamic>? map, String id){ //mock
     PhotoModel newPhotoModel = map![id];
-    newPhotoModel.isFavorite = true;
+    if(newPhotoModel.isFavorite == null || newPhotoModel.isFavorite == false){
+      newPhotoModel.isFavorite = true;
+    } else {
+      newPhotoModel.isFavorite = false;
+    }
     map.update(id, (value) => newPhotoModel);
     return map;
   }

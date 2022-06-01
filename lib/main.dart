@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:photo_tape/DI/dependency-provider.dart';
+import 'package:photo_tape/pages/main_page.dart';
 import 'package:photo_tape/pages/photo_page.dart';
 
 void main() {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: PhotoPage(),
+      home: MainPage()
     );
   }
 }
