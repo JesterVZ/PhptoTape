@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:photo_tape/DI/dependency-provider.dart';
+import 'package:photo_tape/pages/auth_page.dart';
 import 'package:photo_tape/pages/main_page.dart';
 import 'package:photo_tape/pages/photo_page.dart';
 
@@ -28,11 +29,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Photo tape',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MainPage()
-    );
+        title: 'Photo tape',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: AuthPage());
   }
 }

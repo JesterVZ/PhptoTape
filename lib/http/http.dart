@@ -3,23 +3,22 @@ import 'dart:io';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:oauth1/oauth1.dart';
+import 'package:photo_tape/bloc/main_event.dart';
 import 'package:photo_tape/model/photo_info.dart';
 import 'package:photo_tape/model/photo_model.dart';
-import 'package:oauth_dio/oauth_dio.dart';
 
 import '../api/flicker_api_client.dart';
 
-
-
 class HttpClient {
   final Dio _apiClient = _getDio(baseUrl: null);
+  Client? client;
   final CookieJar _cookieJar = _getCookieJar();
 
   String api_key = '9c532bf8ed3fd9ecda75c81a6c790b82';
   String secret_key = '5d0ca9531ef61bd9';
   String mainUrl = "https://www.flickr.com/services/rest";
-
-  
+  FlickrApiClient? flickrApiClient;
 
   static Dio _getDio({String? baseUrl}) {
     return Dio(BaseOptions(
@@ -33,10 +32,20 @@ class HttpClient {
     return CookieJar();
   }
 
-  Future<Object?> getToken() async{
-    FlickrApiClient flickrApiClient = FlickrApiClient(api_key: api_key, secret_key: secret_key);
-    String result = await flickrApiClient.getRequestToken();
+  Future<Object?> getTokenUrl() async {
+    flickrApiClient = FlickrApiClient(api_key: api_key, secret_key: secret_key);
+    String result = await flickrApiClient!.getRequestTokenUrl();
     return result;
+  }
+
+  Future<Object?> getRequestToken(String code) async {
+    var result = await flickrApiClient!.requestToken(code);
+    if (result is Client) {
+      client = result;
+      return "Верификация прошла успешно!";
+    } else {
+      return Error();
+    }
   }
 
   Future<Object?> getPhotos(int page, String tag) async {
@@ -59,7 +68,8 @@ class HttpClient {
         }
         for (int i = 0; i < response.data['photos']['photo'].length; i++) {
           Map<String, dynamic> map = {
-            response.data['photos']['photo'][i]['id'] : PhotoModel.fromMap(response.data['photos']['photo'][i])
+            response.data['photos']['photo'][i]['id']:
+                PhotoModel.fromMap(response.data['photos']['photo'][i])
           };
           photosMap.addEntries(map.entries);
         }

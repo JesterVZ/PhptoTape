@@ -11,15 +11,26 @@ class MainRepo {
     var result = await httpClient.getPhotos(page, tag);
     return result;
   }
-  
-  Future<Object?> getPhotoInfo(String photoId, String secret) async{
+
+  Future<Object?> getPhotoInfo(String photoId, String secret) async {
     var result = await httpClient.getPhotoInfo(photoId, secret);
     return result;
   }
 
-  Map<String, dynamic> addToFavorite(Map<String, dynamic>? map, String id){ //mock
+  Future<Object?> getAccessToken() async {
+    var result = await httpClient.getTokenUrl();
+    return result;
+  }
+
+  Future<Object?> getRequestToken(String code) async {
+    var result = await httpClient.getRequestToken(code);
+    return result;
+  }
+
+  Map<String, dynamic> addToFavorite(Map<String, dynamic>? map, String id) {
+    //mock
     PhotoModel newPhotoModel = map![id];
-    if(newPhotoModel.isFavorite == null || newPhotoModel.isFavorite == false){
+    if (newPhotoModel.isFavorite == null || newPhotoModel.isFavorite == false) {
       newPhotoModel.isFavorite = true;
     } else {
       newPhotoModel.isFavorite = false;

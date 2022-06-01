@@ -72,7 +72,10 @@ class _PhotoPage extends State<PhotoPage> {
                           controller: scrollController,
                           itemBuilder: (BuildContext context, int i) {
                             return PhotoCard(
-                                photo: photosMap.values.elementAt(i), openPhoto: _openPhoto, like: _like,);
+                              photo: photosMap.values.elementAt(i),
+                              openPhoto: _openPhoto,
+                              like: _like,
+                            );
                           })),
                   Visibility(
                       visible: isLoading,
@@ -100,7 +103,7 @@ class _PhotoPage extends State<PhotoPage> {
                 )));
   }
 
-  void _like(String id){
+  void _like(String id) {
     mainBloc!.setFavorite(id);
   }
 
@@ -135,7 +138,7 @@ class _PhotoPage extends State<PhotoPage> {
             duration: const Duration(milliseconds: 400),
             curve: Curves.fastOutSlowIn);
       }
-      if(state.action == "setFavorite"){
+      if (state.action == "setFavorite") {
         setState(() {
           photosMap = state.photos!;
         });
@@ -149,5 +152,3 @@ class _PhotoPage extends State<PhotoPage> {
     mainBloc ??= DependencyProvider.of(context)!.mainBloc;
   }
 }
-
-class Alert {}

@@ -34,7 +34,8 @@ dependencies:
   cookie_jar: 3.0.1
   dio_cookie_manager: 2.0.0
   flutter_svg: ^1.0.3
-  oauth_dio: ^0.2.7
+  url_launcher: ^6.1.2
+  shared_preferences: ^2.0.15
   oauth1: ^2.0.0
   flutter:
     sdk: flutter

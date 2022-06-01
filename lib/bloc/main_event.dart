@@ -13,14 +13,22 @@ class GetPhotosEvent extends Event {
   GetPhotosEvent(this.page, this.tag);
 }
 
-class GetPhotoFullInfo extends Event{
+class GetPhotoFullInfo extends Event {
   String photoId;
   String secret;
   GetPhotoFullInfo(this.photoId, this.secret);
 }
 
-
-class SetFavorite extends Event{
+class SetFavorite extends Event {
   String id;
   SetFavorite(this.id);
+}
+
+class GetAccessToken extends Event {
+  const GetAccessToken();
+}
+
+class GetRequestToken extends Event {
+  String code;
+  GetRequestToken(this.code);
 }
