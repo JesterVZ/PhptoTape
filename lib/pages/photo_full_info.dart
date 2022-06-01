@@ -39,14 +39,14 @@ class _FullPhotoPage extends State<FullPhotoPage> {
                     children: [
                       GestureDetector(
                         onTap: (() {
-                          
+                          mainBloc!.setFavorite(widget.photo.id!);
                         }),
                         child: Container(
                           width: 50,
                           height: 50,
                           child: SvgPicture.asset(
                             'assets/like.svg',
-                            color: Colors.grey,
+                            color: widget.photo.isFavorite == true ? Colors.red : Colors.grey,
                           ),
                         ),
                       ),

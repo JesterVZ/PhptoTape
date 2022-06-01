@@ -7,6 +7,10 @@ import 'package:photo_tape/model/photo_info.dart';
 import 'package:photo_tape/model/photo_model.dart';
 import 'package:oauth_dio/oauth_dio.dart';
 
+import '../api/flicker_api_client.dart';
+
+
+
 class HttpClient {
   final Dio _apiClient = _getDio(baseUrl: null);
   final CookieJar _cookieJar = _getCookieJar();
@@ -14,6 +18,8 @@ class HttpClient {
   String api_key = '9c532bf8ed3fd9ecda75c81a6c790b82';
   String secret_key = '5d0ca9531ef61bd9';
   String mainUrl = "https://www.flickr.com/services/rest";
+
+  
 
   static Dio _getDio({String? baseUrl}) {
     return Dio(BaseOptions(
@@ -27,24 +33,14 @@ class HttpClient {
     return CookieJar();
   }
 
-  Future<OAuthToken?> oAuth() async {
-    OAuthToken? token;
-    try {
-      final oauth = OAuth(
-          tokenUrl: 'https://www.flickr.com/services/oauth/request_token',
-          clientId: api_key,
-          clientSecret: secret_key);
-
-      token = await oauth.requestToken(PasswordGrant(
-          username: 'netqualityteam@gmail.com', password: '&rNzbq=V4G.z/_5'));
-      return token;
-    } catch (e) {
-      print(e);
-    }
-    return token;
+  Future<Object?> getToken() async{
+    FlickrApiClient flickrApiClient = FlickrApiClient(api_key: api_key, secret_key: secret_key);
+    String result = await flickrApiClient.getRequestToken();
+    return result;
   }
 
   Future<Object?> getPhotos(int page, String tag) async {
+    //getToken();
     String uri = mainUrl;
     try {
       var formData = FormData.fromMap({
