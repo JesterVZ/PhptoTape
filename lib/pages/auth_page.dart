@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_tape/pages/main_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../DI/dependency-provider.dart';
@@ -15,6 +16,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPage extends State<AuthPage> {
   MainBloc? mainBloc;
+  SharedPreferences? sharedPreferences;
   bool isLoading = false;
   bool isGetCode = false;
   TextEditingController controller = TextEditingController();

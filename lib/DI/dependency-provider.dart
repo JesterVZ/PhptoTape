@@ -7,6 +7,7 @@ class DependencyProvider extends InheritedWidget {
   HttpClient? _httpClient;
   MainBloc? _mainBloc;
   MainRepo? _mainRepo;
+  
 
   DependencyProvider({Key? key, Widget? child})
       : assert(child != null),

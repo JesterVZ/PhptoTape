@@ -115,11 +115,12 @@ class _PhotoPage extends State<PhotoPage> {
             builder: (context) => FullPhotoPage(
                   photo: photoModel,
                   photosMap: photosMap,
+                  from: "photo",
                 )));
   }
 
   void _like(String id) {
-    mainBloc!.setFavorite(id, photosMap);
+    mainBloc!.setFavorite(id, photosMap, "photo");
   }
 
   _listener(BuildContext context, MainState state) {
@@ -143,7 +144,6 @@ class _PhotoPage extends State<PhotoPage> {
                       child: const Text('OK'),
                     ),
                   ]));
-      //photos = [];
       return;
     }
     if (state.photos != null) {

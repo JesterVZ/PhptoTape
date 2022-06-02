@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -49,8 +49,37 @@ class HttpClient {
       'method': 'flickr.favorites.getList'
     };
     var result = await client!.post(Uri.parse(uri), body: formdata);
-    return result;
+    Map<String, dynamic> photosMap = {};
+    final Map<String, dynamic> data = json.decode(result.body);
+    for(int i = 0; i < data['photos']['photo'].length; i++){
+      PhotoModel model = PhotoModel.fromMap(data['photos']['photo'][i]);
+      model.isFavorite = true;
+      Map<String, dynamic> map = {
+            data['photos']['photo'][i]['id']: model     
+      };
+    photosMap.addEntries(map.entries);
+    }
+    return photosMap;
   }
+
+  Future<Object?> setFavorite(String photoId, bool? isFavorite) async{
+    String uri = mainUrl;
+    Map<String, dynamic> formdata = {
+      'api_key': api_key,
+      'method': (isFavorite == false || isFavorite == null) ? 'flickr.favorites.add' : 'flickr.favorites.remove',
+      'format': 'json',
+      'nojsoncallback': '1',
+      'photo_id': photoId
+    };
+    var result = await client!.post(Uri.parse(uri), body: formdata);
+    if(result.statusCode == 200){
+      final Map<String, dynamic> data = json.decode(result.body);
+      return data["stat"];
+    } else {
+      return null;
+    }
+  }
+
 
   Future<Object?> getRequestToken(String code) async {
     var result = await flickrApiClient!.requestToken(code);
@@ -63,7 +92,6 @@ class HttpClient {
   }
 
   Future<Object?> getPhotos(int page, String tag) async {
-    //getToken();
     String uri = mainUrl;
     try {
       var formData = FormData.fromMap({

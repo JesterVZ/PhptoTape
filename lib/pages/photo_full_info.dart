@@ -11,8 +11,9 @@ import '../elements/bloc/bloc_screen.dart';
 
 class FullPhotoPage extends StatefulWidget {
   PhotoModel photo;
+  String from;
   Map<String, dynamic> photosMap;
-  FullPhotoPage({required this.photo, required this.photosMap});
+  FullPhotoPage({required this.photo, required this.photosMap, required this.from});
   @override
   State<StatefulWidget> createState() => _FullPhotoPage();
 }
@@ -39,7 +40,7 @@ class _FullPhotoPage extends State<FullPhotoPage> {
                     children: [
                       GestureDetector(
                         onTap: (() {
-                          mainBloc!.setFavorite(widget.photo.id!, widget.photosMap);
+                          mainBloc!.setFavorite(widget.photo.id!, widget.photosMap, widget.from);
                         }),
                         child: Container(
                           width: 50,

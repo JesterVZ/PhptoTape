@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:photo_tape/bloc/main_event.dart';
 import 'package:photo_tape/bloc/main_state.dart';
@@ -41,8 +43,8 @@ class MainBloc extends Bloc<Event, MainState> {
     add(GetPhotoFullInfo(photoId, secret));
   }
 
-  setFavorite(String id, Map<String, dynamic>? photos) {
-    add(SetFavorite(id, photos));
+  setFavorite(String id, Map<String, dynamic>? photos, String from) {
+    add(SetFavorite(id, photos, from));
   }
 
   getAccessToken() {
@@ -87,9 +89,20 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleSetFavorite(SetFavorite event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
-      Map<String, dynamic>? result = repo.addToFavorite(event.photos, event.id);
-      yield state.copyWith(
-          error: null, loading: false, photos: result, action: "setFavorite");
+      Object? result = await repo.addToFavoritePost(event.photos, event.id);
+      if (result is Map<String, dynamic>) {
+        if(event.from == "favorites"){
+          yield state.copyWith(
+            error: null, loading: false, favorites: result, action: "setFavorite");
+        } else {
+          yield state.copyWith(
+            error: null, loading: false, photos: result, action: "setFavorite");
+        }
+        
+      } else {
+        yield state.copyWith(
+          error: result, loading: false, action: "setFavorite");
+      }  
     } catch (e) {
       yield state.copyWith(error: e.toString(), loading: false);
     }
@@ -121,10 +134,14 @@ class MainBloc extends Bloc<Event, MainState> {
   }
 
   Stream<MainState> _handleGetFavorites(GetFavorites event) async* {
-    Object? result = await repo.getFavoriteList();
     yield state.copyWith(loading: true, error: null, accessTokenUrl: null);
+    
     try {
       Object? result = await repo.getFavoriteList();
+      if (result is Map<String, dynamic>) {
+        yield state.copyWith(
+            error: null, loading: false, favorites: result, action: "getFavorites");
+      }
     } catch (e) {
       yield state.copyWith(error: e.toString(), loading: false);
     }

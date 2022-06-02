@@ -43,4 +43,20 @@ class MainRepo {
     map.update(id, (value) => newPhotoModel);
     return map;
   }
+
+  Future<Object?> addToFavoritePost(Map<String, dynamic>? map, String id) async{
+    PhotoModel newPhotoModel = map![id];
+    var result = await httpClient.setFavorite(id, newPhotoModel.isFavorite);
+    if(result == "ok"){
+      if (newPhotoModel.isFavorite == null || newPhotoModel.isFavorite == false) {
+        newPhotoModel.isFavorite = true;
+      } else {
+        newPhotoModel.isFavorite = false;
+      }
+      map.update(id, (value) => newPhotoModel);
+      return map;
+    } else {
+      return result;
+    }
+  }
 }

@@ -8,6 +8,7 @@ class MainState {
   final String? alert;
   final Object? error;
   final Map<String, dynamic>? photos;
+  final Map<String, dynamic>? favorites;
   final PhotoInfo? photoInfo;
 
   MainState(
@@ -17,7 +18,8 @@ class MainState {
       this.action,
       this.photoInfo,
       this.accessTokenUrl,
-      this.alert});
+      this.alert,
+      this.favorites});
 
   static initial() => MainState(
         loading: false,
@@ -28,6 +30,7 @@ class MainState {
       {bool? loading,
       Object? error,
       Map<String, dynamic>? photos,
+      Map<String, dynamic>? favorites,
       String? action,
       String? alert,
       String? accessTokenUrl,
@@ -36,6 +39,7 @@ class MainState {
         error: error,
         loading: loading ?? this.loading,
         photos: photos ?? this.photos,
+        favorites: favorites ?? this.favorites,
         photoInfo: photoInfo,
         accessTokenUrl: accessTokenUrl,
         action: action,

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:oauth1/oauth1.dart' as oauth1;
 
 class FlickrApiClient {
@@ -40,7 +42,6 @@ class FlickrApiClient {
       final response =
           await _auth.requestTokenCredentials(_tempCredentials, verifier);
       _tempCredentials = null;
-      //_saveToken(response.credentials);
       var authClient = oauth1.Client(
           platform.signatureMethod, clientCredentials, response.credentials);
       return authClient;

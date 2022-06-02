@@ -1,3 +1,4 @@
+import 'dart:convert';
 class PhotoModel{
   String? id;
   String? owner;
@@ -39,4 +40,6 @@ class PhotoModel{
       url: "https://farm${map['farm']}.staticflickr.com/${map['server']}/${map['id']}_${map['secret']}.jpg"
     );
   }
+
+  factory PhotoModel.fromJson(String source) => PhotoModel.fromMap(json.decode(source));
 }
