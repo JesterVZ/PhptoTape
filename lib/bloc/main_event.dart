@@ -21,7 +21,8 @@ class GetPhotoFullInfo extends Event {
 
 class SetFavorite extends Event {
   String id;
-  SetFavorite(this.id);
+  Map<String, dynamic>? photos;
+  SetFavorite(this.id,this.photos);
 }
 
 class GetAccessToken extends Event {

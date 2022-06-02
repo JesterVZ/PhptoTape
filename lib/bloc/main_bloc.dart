@@ -41,8 +41,8 @@ class MainBloc extends Bloc<Event, MainState> {
     add(GetPhotoFullInfo(photoId, secret));
   }
 
-  setFavorite(String id) {
-    add(SetFavorite(id));
+  setFavorite(String id, Map<String, dynamic>? photos) {
+    add(SetFavorite(id, photos));
   }
 
   getAccessToken() {
@@ -87,7 +87,7 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleSetFavorite(SetFavorite event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
-      Map<String, dynamic>? result = repo.addToFavorite(state.photos, event.id);
+      Map<String, dynamic>? result = repo.addToFavorite(event.photos, event.id);
       yield state.copyWith(
           error: null, loading: false, photos: result, action: "setFavorite");
     } catch (e) {

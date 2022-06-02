@@ -25,6 +25,11 @@ class _PhotoPage extends State<PhotoPage> {
   bool isLoading = false;
 
   @override
+  void initState() {
+    scrollController.addListener(_pagination);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return BlocScreen<MainBloc, MainState>(
       bloc: mainBloc,
@@ -94,17 +99,27 @@ class _PhotoPage extends State<PhotoPage> {
     );
   }
 
+  void _pagination(){
+    if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+      setState(() {
+        page++;
+        mainBloc!.getPhotos(page, searchController.text);
+      });
+    }
+  }
+
   void _openPhoto(PhotoModel photoModel) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => FullPhotoPage(
                   photo: photoModel,
+                  photosMap: photosMap,
                 )));
   }
 
   void _like(String id) {
-    mainBloc!.setFavorite(id);
+    mainBloc!.setFavorite(id, photosMap);
   }
 
   _listener(BuildContext context, MainState state) {
@@ -137,6 +152,9 @@ class _PhotoPage extends State<PhotoPage> {
         scrollController.animateTo(scrollController.position.minScrollExtent,
             duration: const Duration(milliseconds: 400),
             curve: Curves.fastOutSlowIn);
+      }
+      if(state.action == "search" && page > 1){
+        photosMap.addEntries(state.photos!.entries);
       }
       if (state.action == "setFavorite") {
         setState(() {
