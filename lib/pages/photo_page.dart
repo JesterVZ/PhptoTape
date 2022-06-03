@@ -149,8 +149,16 @@ class _PhotoPage extends State<PhotoPage> {
       return;
     }
     if (state.photos != null) {
+      photosMap = state.photos!;
       if (state.action == "search" && page == 1) {
-        photosMap = state.photos!;
+        for (int i = 0; i < state.favorites!.length; i++) {
+          String key = state.favorites!.keys.elementAt(i);
+          if (photosMap.containsKey(key)) {
+            PhotoModel photoModel = photosMap[key];
+            photoModel.isFavorite = true;
+            photosMap.update(key, (value) => photoModel);
+          }
+        }
         scrollController.animateTo(scrollController.position.minScrollExtent,
             duration: const Duration(milliseconds: 400),
             curve: Curves.fastOutSlowIn);
@@ -170,5 +178,6 @@ class _PhotoPage extends State<PhotoPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     mainBloc ??= locator.get<MainBloc>();
+    mainBloc!.getFavorites();
   }
 }
