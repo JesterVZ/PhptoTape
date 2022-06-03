@@ -37,6 +37,7 @@ dependencies:
   url_launcher: ^6.1.2
   shared_preferences: ^2.0.15
   oauth1: ^2.0.0
+  get_it: ^7.2.0
   flutter:
     sdk: flutter
 

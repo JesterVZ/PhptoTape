@@ -1,16 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:photo_tape/DI/dependency-provider.dart';
+import 'package:photo_tape/locator.dart';
 import 'package:photo_tape/pages/auth_page.dart';
 import 'package:photo_tape/pages/main_page.dart';
 import 'package:photo_tape/pages/photo_page.dart';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(DependencyProvider(
-    child: const MyApp(),
-  ));
+  setup();
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -34,6 +35,6 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: AuthPage());
-        //home: MainPage());
+    //home: MainPage());
   }
 }

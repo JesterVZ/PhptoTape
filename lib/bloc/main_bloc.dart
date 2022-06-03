@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:photo_tape/bloc/main_event.dart';
 import 'package:photo_tape/bloc/main_state.dart';
+import 'package:photo_tape/locator.dart';
 import 'package:photo_tape/model/photo_info.dart';
 import 'package:photo_tape/model/photo_model.dart';
 
 import '../repository/main_repo.dart';
 
 class MainBloc extends Bloc<Event, MainState> {
-  final MainRepo repo;
+  //final MainRepo repo;
 
   @override
   Stream<MainState> mapEventToState(Event event) async* {
@@ -33,7 +34,7 @@ class MainBloc extends Bloc<Event, MainState> {
     }
   }
 
-  MainBloc(this.repo) : super(MainState.initial());
+  MainBloc() : super(MainState.initial());
 
   getPhotos(int page, String tag) {
     add(GetPhotosEvent(page, tag));
@@ -62,7 +63,8 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleSearchPhotos(GetPhotosEvent event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
-      Object? result = await repo.getPhoto(event.page, event.tag);
+      Object? result =
+          await locator.get<MainRepo>().getPhoto(event.page, event.tag);
       if (result is Map<String, dynamic>) {
         yield state.copyWith(
             error: null, loading: false, photos: result, action: "search");
@@ -77,7 +79,9 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleGetFullInfo(GetPhotoFullInfo event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
-      Object? result = await repo.getPhotoInfo(event.photoId, event.secret);
+      Object? result = await locator
+          .get<MainRepo>()
+          .getPhotoInfo(event.photoId, event.secret);
       if (result is PhotoInfo) {
         yield state.copyWith(error: null, loading: false, photoInfo: result);
       }
@@ -89,20 +93,27 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleSetFavorite(SetFavorite event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
-      Object? result = await repo.addToFavoritePost(event.photos, event.id);
+      Object? result = await locator
+          .get<MainRepo>()
+          .addToFavoritePost(event.photos, event.id);
       if (result is Map<String, dynamic>) {
-        if(event.from == "favorites"){
+        if (event.from == "favorites") {
           yield state.copyWith(
-            error: null, loading: false, favorites: result, action: "setFavorite");
+              error: null,
+              loading: false,
+              favorites: result,
+              action: "setFavorite");
         } else {
           yield state.copyWith(
-            error: null, loading: false, photos: result, action: "setFavorite");
+              error: null,
+              loading: false,
+              photos: result,
+              action: "setFavorite");
         }
-        
       } else {
         yield state.copyWith(
-          error: result, loading: false, action: "setFavorite");
-      }  
+            error: result, loading: false, action: "setFavorite");
+      }
     } catch (e) {
       yield state.copyWith(error: e.toString(), loading: false);
     }
@@ -111,7 +122,7 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleGetAccessToken(GetAccessToken event) async* {
     yield state.copyWith(loading: true, error: null);
     try {
-      Object? result = await repo.getAccessToken();
+      Object? result = await locator.get<MainRepo>().getAccessToken();
       yield state.copyWith(
           loading: false, error: null, accessTokenUrl: result.toString());
     } catch (e) {
@@ -122,7 +133,8 @@ class MainBloc extends Bloc<Event, MainState> {
   Stream<MainState> _handleGetRequestToken(GetRequestToken event) async* {
     yield state.copyWith(loading: true, error: null, accessTokenUrl: null);
     try {
-      Object? result = await repo.getRequestToken(event.code);
+      Object? result =
+          await locator.get<MainRepo>().getRequestToken(event.code);
       if (result is String) {
         yield state.copyWith(error: null, loading: false, alert: result);
       } else {
@@ -135,12 +147,15 @@ class MainBloc extends Bloc<Event, MainState> {
 
   Stream<MainState> _handleGetFavorites(GetFavorites event) async* {
     yield state.copyWith(loading: true, error: null, accessTokenUrl: null);
-    
+
     try {
-      Object? result = await repo.getFavoriteList();
+      Object? result = await locator.get<MainRepo>().getFavoriteList();
       if (result is Map<String, dynamic>) {
         yield state.copyWith(
-            error: null, loading: false, favorites: result, action: "getFavorites");
+            error: null,
+            loading: false,
+            favorites: result,
+            action: "getFavorites");
       }
     } catch (e) {
       yield state.copyWith(error: e.toString(), loading: false);

@@ -7,8 +7,8 @@ import 'package:photo_tape/elements/photo/photo_card.dart';
 import 'package:photo_tape/model/photo_model.dart';
 import 'package:photo_tape/pages/photo_full_info.dart';
 
-import '../DI/dependency-provider.dart';
 import '../elements/bloc/bloc_screen.dart';
+import '../locator.dart';
 
 class PhotoPage extends StatefulWidget {
   @override
@@ -29,6 +29,7 @@ class _PhotoPage extends State<PhotoPage> {
     scrollController.addListener(_pagination);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return BlocScreen<MainBloc, MainState>(
@@ -99,8 +100,9 @@ class _PhotoPage extends State<PhotoPage> {
     );
   }
 
-  void _pagination(){
-    if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+  void _pagination() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
       setState(() {
         page++;
         mainBloc!.getPhotos(page, searchController.text);
@@ -153,7 +155,7 @@ class _PhotoPage extends State<PhotoPage> {
             duration: const Duration(milliseconds: 400),
             curve: Curves.fastOutSlowIn);
       }
-      if(state.action == "search" && page > 1){
+      if (state.action == "search" && page > 1) {
         photosMap.addEntries(state.photos!.entries);
       }
       if (state.action == "setFavorite") {
@@ -167,6 +169,6 @@ class _PhotoPage extends State<PhotoPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    mainBloc ??= DependencyProvider.of(context)!.mainBloc;
+    mainBloc ??= locator.get<MainBloc>();
   }
 }
